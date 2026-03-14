@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Car Classifier</title>
+  <!-- キャッシュ強い場合は ?v=1 等で更新 -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}?v=1" />
+</head>
+<body>
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <img class="header_img" src="" alt="Aidemy" />
+    <a class="header-logo" href="#">Car Classifier</a>
+  </header>
+
+  <!-- ===== Main ===== -->
+  <main class="container main">
+    <h1 class="title">AIが送信された画像の車を識別します</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for msg in messages %}
+            <p>{{ msg }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form class="upload-form" method="post" enctype="multipart/form-data">
+      <label class="file-label">
+        画像を送信してください
+        <input type="file" name="file" accept="image/*" />
+      </label>
+      <button class="btn" type="submit">submit!</button>
+    </form>
+
+    {% if answer %}
+      <p class="answer">{{ answer }}</p>
+    {% endif %}
+
+    {% if image_url or vis_gray_url or vis_invert_url %}
+      <section class="card">
+        <h2 class="card-title">アップロード画像</h2>
+
+        <div class="gallery">
+          {% if image_url %}
+          <figure class="item">
+            <img src="{{ image_url }}" alt="uploaded image" class="preview" />
+            <figcaption>
+              Original　
+              <a class="dl" href="{{ image_url }}" download>この画像をダウンロード</a>
+            </figcaption>
+          </figure>
+          {% endif %}
+
+          {% if vis_gray_url %}
+          <figure class="item">
+            <img src="{{ vis_gray_url }}" alt="gray visualization" class="preview" />
+            <figcaption>Gray（28×28 → 280×280）</figcaption>
+          </figure>
+          {% endif %}
+
+          {% if vis_invert_url %}
+          <figure class="item">
+            <img src="{{ vis_invert_url }}" alt="invert visualization" class="preview" />
+            <figcaption>Invert（28×28 → 280×280）</figcaption>
+          </figure>
+          {% endif %}
+        </div>
+      </section>
+    {% endif %}
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <small>© Car Classifier Demo</small>
+  </footer>
+</body>
+</html>
